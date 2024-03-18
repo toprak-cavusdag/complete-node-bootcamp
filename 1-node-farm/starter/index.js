@@ -25,8 +25,14 @@ const server = http.createServer((req, res) => {
 
   if (pathName === '/' || pathName === '/overview') {
     return res.end('This is the Overview Page');
-  } else if (pathName === '/product') {
-    return res.end('This is the product');
+  } else if (pathName === '/api') {
+    fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
+      const productData = JSON.parse(data);
+      res.writeHead(200, {
+        'Content-type': 'application/json',
+      });
+      res.end(data);
+    });
   } else {
     res.writeHead(404, {
       'Content-type': 'text/html',
@@ -34,8 +40,6 @@ const server = http.createServer((req, res) => {
     });
     return res.end('<h1>Page not found</h1>');
   }
-
-  res.end('Hello From The Server!');
 });
 
 server.listen(8000, '127.0.0.1', () => {
