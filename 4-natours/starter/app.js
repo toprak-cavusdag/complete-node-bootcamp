@@ -3,6 +3,8 @@ const fs = require('fs');
 const app = express();
 app.use(express.json());
 
+// Tours
+
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
@@ -85,6 +87,43 @@ const deleteTour = (req, res) => {
   });
 };
 
+// Users
+
+const getAllUsers = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
+};
+
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
+};
+
+const removeUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
+};
+
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
+};
+
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'This route is not yet defined!',
+  });
+};
+
 //Long Way
 // app.get('/api/v2/tours/:id', getAllTours);
 // app.get('/api/v2/tours', getTour);
@@ -93,12 +132,18 @@ const deleteTour = (req, res) => {
 // app.delete('/api/v2/tours/:id', deleteTour);
 
 //Short Way
-app.route('/api/v2/tours').get(getAllTours).patch(createTour);
-app
-  .route('/api/v2/tours/:id')
-  .get(getTour)
-  .patch(updateTour)
-  .delete(deleteTour);
+
+const tourRouter = express.Router();
+const userRouter = express.Router();
+
+tourRouter.route('/').get(getAllTours).patch(createTour);
+tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
+
+userRouter.route('/').get(getAllUsers).post(createUser);
+userRouter.route('/:id').get(getUser).patch(updateUser).delete(removeUser);
+
+app.use('/api/v2/tours', tourRouter);
+app.use('/api/v2/users', userRouter);
 
 const port = 3000;
 app.listen(port, () => {
